@@ -1,14 +1,25 @@
 import express from "express";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import { ConnectDB } from "./config/db.js";
+import cookieParser from "cookie-parser";
+import userRoutes from "./routes/userRoutes.js";
+import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
 
 dotenv.config();
 
 const app = express();
 
-const PORT = process.env.PORT || 5000
+app.use(express.json());
+app.use(cookieParser());
+
+app.use("/api/users", userRoutes);
+
+app.use(notFound);
+app.use(errorHandler);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    ConnectDB();
-    console.log(`Server started on http://localhost:${PORT}`)
-})
+  ConnectDB();
+  console.log(`Server started on http://localhost:${PORT}`);
+});
