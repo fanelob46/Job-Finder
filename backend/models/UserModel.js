@@ -7,7 +7,7 @@ const UserSchema = mongoose.Schema(
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    accountType: { type: String, default: "seeker" },
+    role: { type: String, enum: ['admin', 'company_manager', 'user'], default: 'user' },
     contact: { type: String },
     location: { type: String },
     profileUrl: { type: String },

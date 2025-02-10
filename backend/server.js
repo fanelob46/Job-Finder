@@ -4,6 +4,7 @@ import { ConnectDB } from "./config/db.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
+import JobRouter from "./routes/JobRoutes.js"
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/users", userRoutes);
+app.use("/api/jobs", JobRouter)
 
 app.use(notFound);
 app.use(errorHandler);

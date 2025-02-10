@@ -3,7 +3,7 @@ import User from "../models/UserModel.js";
 import generateToken from "../utils/generateToken.js";
 
 export const RegisterUser = AsyncHandler(async (req,res) => {
-       const { firstname, lastname, password, location, contact} = req.body;
+       const { firstname, lastname, password, location, contact, role} = req.body;
        const {email} = req.body
 
        if( !firstname || !lastname || !email || !password || !location, !contact)
@@ -26,6 +26,7 @@ export const RegisterUser = AsyncHandler(async (req,res) => {
          password,
          location,
          contact,
+         role
        });
 
        if(newUser){
@@ -85,8 +86,9 @@ export const updateProfile = AsyncHandler(async (req, res) => {
     user.firstname = req.body.firstname || user.firstname;
     user.lastname = req.body.lastname || user.lastname;
     user.email = req.body.email || user.email;
-    user.DOB = req.body.location || user.location;
-    user.username = req.body.contact || user.contact;
+    user.location = req.body.location || user.location;
+    user.contact = req.body.contact || user.contact;
+    user.role = req.body.role || user.role
 
     if (req.body.password) {
       user.password = req.body.password;
@@ -101,6 +103,7 @@ export const updateProfile = AsyncHandler(async (req, res) => {
       email: updatedUser.email,
       location: updatedUser.location,
       contact: updatedUser.contact,
+      role : updatedUser.role
     });
   } else {
     res.status(404);
@@ -116,3 +119,15 @@ export const logoutUser = async (req, res) => {
   });
   res.status(200).json({ message: "Sad to see you go" });
 };
+
+export const CheckRole = async (req,res) => {
+  const user = User.findById(req.user._id)
+
+  const role = user.role
+
+  if(user){
+    res.status(200).json({
+       data: role
+    })
+  }
+}
