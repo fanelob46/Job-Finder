@@ -1,84 +1,72 @@
 import AsyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
+import Jobs from "../models/JobsModel.js";
 import generateToken from "../utils/generateToken.js";
 
-export const RegisterUser = AsyncHandler(async (req,res) => {
-       const { firstname, lastname, password, location, contact, role} = req.body;
-       const {email} = req.body
+// Register User
+export const RegisterUser = AsyncHandler(async (req, res) => {
+  const { firstname, lastname, password, location, contact, role, email } =
+    req.body;
 
-       if( !firstname || !lastname || !email || !password || !location, !contact)
-       {
-        res.status(400);
-        throw new Error("please enter all fields")
-       }
+  if (!firstname || !lastname || !email || !password || !location || !contact) {
+    res.status(400);
+    throw new Error("Please enter all fields");
+  }
 
-       const userExist = await User.findOne({email});
-       
-       if(userExist){
-        res.status(400);
-        throw new Error(" User already exist")
-       }
+  const userExist = await User.findOne({ email });
+  if (userExist) {
+    res.status(400);
+    throw new Error("User already exists");
+  }
 
-       const newUser = await User.create({
-         firstname,
-         lastname,
-         email,
-         password,
-         location,
-         contact,
-         role
-       });
+  const newUser = await User.create({
+    firstname,
+    lastname,
+    email,
+    password,
+    location,
+    contact,
+    role,
+  });
 
-       if(newUser){
-        generateToken(res, newUser._id)
-        res.status(201).json({
-            success : true,
-            data: newUser
-        })
+  if (newUser) {
+    generateToken(res, newUser._id);
+    res.status(201).json({ success: true, data: newUser });
+  } else {
+    res.status(400);
+    throw new Error("Registration unsuccessful");
+  }
+});
 
-       }else {
-        res.status(400);
-        throw new Error("registration unsuccessfully")
-       }
-})
+// Login User
+export const Login = AsyncHandler(async (req, res) => {
+  const { email, password } = req.body;
 
-export const Login = AsyncHandler( async (req,res) => {
-    const {email, password} = req.body;
-
-    
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
-    
-    res.status(200).json({
-      success: true,
-      message: "Successfully logged in Welcome!",
-      data: user
-    });
+    res
+      .status(200)
+      .json({ success: true, message: "Successfully logged in", data: user });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
   }
-})
+});
 
+// Get User Profile
 export const getUserProfile = AsyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  const { password, ...userWithoutPassword } = user.toObject();
+  const user = await User.findById(req.user._id).select("-password");
 
   if (user) {
-    res.json({
-      success: true,
-      message: "user profile info",
-      data: userWithoutPassword,
-    });
+    res.json({ success: true, message: "User profile info", data: user });
   } else {
     res.status(404);
     throw new Error("User not found");
   }
 });
 
-
+// Update User Profile
 export const updateProfile = AsyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
@@ -88,7 +76,7 @@ export const updateProfile = AsyncHandler(async (req, res) => {
     user.email = req.body.email || user.email;
     user.location = req.body.location || user.location;
     user.contact = req.body.contact || user.contact;
-    user.role = req.body.role || user.role
+    user.role = req.body.role || user.role;
 
     if (req.body.password) {
       user.password = req.body.password;
@@ -97,13 +85,16 @@ export const updateProfile = AsyncHandler(async (req, res) => {
     const updatedUser = await user.save();
 
     res.json({
-      _id: updatedUser._id,
-      firstname: updatedUser.firstname,
-      lastname: updatedUser.lastname,
-      email: updatedUser.email,
-      location: updatedUser.location,
-      contact: updatedUser.contact,
-      role : updatedUser.role
+      success: true,
+      data: {
+        _id: updatedUser._id,
+        firstname: updatedUser.firstname,
+        lastname: updatedUser.lastname,
+        email: updatedUser.email,
+        location: updatedUser.location,
+        contact: updatedUser.contact,
+        role: updatedUser.role,
+      },
     });
   } else {
     res.status(404);
@@ -111,23 +102,39 @@ export const updateProfile = AsyncHandler(async (req, res) => {
   }
 });
 
-
-export const logoutUser = async (req, res) => {
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    expires: new Date(0),
-  });
+// Logout User
+export const logoutUser = AsyncHandler(async (req, res) => {
+  res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
   res.status(200).json({ message: "Sad to see you go" });
-};
+});
 
-export const CheckRole = async (req,res) => {
-  const user = User.findById(req.user._id)
+// Check User Role
+export const CheckRole = AsyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id);
 
-  const role = user.role
-
-  if(user){
-    res.status(200).json({
-       data: role
-    })
+  if (user) {
+    res.status(200).json({ success: true, role: user.role });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
   }
-}
+});
+
+// Get Jobs User Applied For
+export const getUserApplications = AsyncHandler(async (req, res) => {
+  try {
+    const jobs = await Jobs.find({ application: req.user._id }).populate(
+      "userId",
+      "firstname lastname email"
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Jobs user has applied for",
+      data: jobs,
+    });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});

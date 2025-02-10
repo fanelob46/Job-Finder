@@ -1,7 +1,8 @@
 import AsyncHandler from "express-async-handler";
+import mongoose from "mongoose";
 import Jobs from "../models/JobsModel.js";
 import User from "../models/UserModel.js";
-import Jobs from "../models/JobsModel.js";
+
 
 export const addJob = AsyncHandler(async (req, res) => {
   const {
@@ -14,12 +15,10 @@ export const addJob = AsyncHandler(async (req, res) => {
     desc,
     requirements,
   } = req.body;
-
   const userId = req.user._id;
 
   // Find the logged-in user
-  const loginUser = await User.findById(req.user._id);
-
+  const loginUser = await User.findById(userId);
   if (!loginUser || !["admin", "company_manager"].includes(loginUser.role)) {
     return res.status(403).json({
       success: false,
@@ -37,8 +36,9 @@ export const addJob = AsyncHandler(async (req, res) => {
       experience,
       desc,
       requirements,
-      userId
+      userId,
     });
+
     const savedJob = await newJob.save();
     res.status(201).json({ success: true, data: savedJob });
   } catch (error) {
@@ -47,64 +47,85 @@ export const addJob = AsyncHandler(async (req, res) => {
   }
 });
 
-export const GetallJobs = AsyncHandler( async (req,res) => {
-    
-   const id = req.user._id;
-   const stringId = id instanceof Buffer ? id.toString() : id;
 
-   // Check if the ID exists in the database
-   if (!mongoose.Types.ObjectId.isValid(stringId)) {
-     return res.status(404).json({
-       success: false,
-       message: "Invalid user ID",
-     });
-   }
+export const GetallJobs = AsyncHandler(async (req, res) => {
+  const userId = req.user._id;
 
-    try {
-        const jobs = await Jobs.find({ userId: id });
-        res.status(200).json({
-          success: true,
-          message: "Succesfully fetched Jobs",
-            data: jobs
-        })
-    } catch (error) {
-         console.error(`Error: ${error.message}`);
-         res.status(500).json({ success: false, message: "Server Error" });
+  if (!mongoose.isValidObjectId(userId)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid user ID",
+    });
+  }
+
+  try {
+    const jobs = await Jobs.find({ userId });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched jobs",
+      data: jobs,
+    });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
+
+export const updateJob = AsyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const jobData = req.body;
+
+  try {
+    const updatedJob = await Jobs.findByIdAndUpdate(id, jobData, { new: true });
+
+    if (!updatedJob) {
+      return res.status(404).json({ success: false, message: "Job not found" });
     }
 
-})
+    res.status(200).json({ success: true, data: updatedJob });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
 
-export const updateJob = AsyncHandler( async() => {
-  
+
+export const deleteJob = AsyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  const jobs = req.body;
-
-   try {
-     const updatedJob = await Jobs.findByIdAndUpdate(id, jobs, { new: true });
-     res.status(200).json({ success: true, data: updatedJob });
-   } catch (error) {
-     res.status(500).json({ success: false, message: "server error" });
-   }
-})
-
-export const deleteJob = async(req, res) => {
-
-  const {id} = req.params;
   try {
-    const Jobs = await Jobs.findByIdAndDelete(id);
+    const job = await Jobs.findByIdAndDelete(id);
 
-    if(!Jobs) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Job not found" });
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
     }
 
-     res
-       .status(200)
-       .json({ success: true, message: "Job deleted succesfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Job deleted successfully" });
   } catch (error) {
-       res.status(500).json({ success: false, message: "internal server error" }); 
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
-  
-}
+});
+
+
+export const getJobApplications = AsyncHandler(async (req, res) => {
+  try {
+    const jobs = await Jobs.find().populate(
+      "application",
+      "firstname lastname email"
+    );
+
+    const jobApplications = jobs.map((job) => ({
+      jobId: job._id,
+      title: job.title,
+      applicantsCount: job.application.length,
+      applicants: job.application,
+    }));
+
+    res.status(200).json({ success: true, data: jobApplications });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});

@@ -10,8 +10,8 @@ const jobSchema = new mongoose.Schema(
     experience: { type: Number, default: 0 },
     desc: { type: String },
     requirements: { type: String },
-    application: [{ type: Schema.Types.ObjectId, ref: "Users" }],
-    userId: [{ type: Schema.Types.ObjectId, ref: "Users" }],
+    application: [{ type: Schema.Types.ObjectId, ref: "User" }],
+    userId: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
