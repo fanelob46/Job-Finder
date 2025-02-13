@@ -5,6 +5,7 @@ const jobSchema = new mongoose.Schema(
     title: { type: String, required: true },
     type: { type: String, required: true },
     location: { type: String, required: true },
+    category: { type: String, required: true},
     salary: { type: Number, required: true },
     vacancies: { type: Number },
     experience: { type: Number, default: 0 },
