@@ -1,6 +1,6 @@
 const VertiSearch = () => {
   return (
-    <div className="bg-[#005478] p-4 flex items-center space-x-4">
+    <div className="bg-[#005478] p-4 flex justify-center space-x-4 w-full ">
       <input
         className="bg-transparent border-b border-white text-white placeholder-white focus:outline-none w-64"
         type="text"

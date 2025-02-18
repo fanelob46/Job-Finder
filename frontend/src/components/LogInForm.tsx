@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 const LogInForm = () => {
@@ -70,12 +71,12 @@ const LogInForm = () => {
         </div>
         <p className="text-gray-800 text-sm !mt-8 text-center">
           Don't have an account?{" "}
-          <a
-            href="javascript:void(0);"
+          <Link
+            to={"/signUp"}
             className="text-blue-600 hover:underline ml-1 whitespace-nowrap font-semibold"
           >
             Register here
-          </a>
+          </Link>
         </p>
       </form>
     </div>

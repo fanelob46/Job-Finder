@@ -10,6 +10,9 @@ import ProfileSidebar from "./components/ProfileSidebar"
 import ProfileLayout from "./layouts/ProfileLayout"
 import PersonalInfo from "./components/PersonaInfo"
 import JobApplied from "./components/JobApplied"
+import SingUp from "./components/SingUp"
+import LogInForm from "./components/LogInForm"
+import EditProfile from "./components/EditProfile"
 
 
 function App() {
@@ -18,7 +21,9 @@ function App() {
     {path : "/",
       element: <MainLayout/>,
       children: [
-        { index: true, element: <HoriSearch/>}
+        { index: true, element: <HoriSearch/>},
+        { path: "/signUp", element: <SingUp/>},
+        { path: "/login", element: <LogInForm/>}
       ]
     },
     {
@@ -34,7 +39,8 @@ function App() {
       element: <ProfileLayout/>,
       children: [
         { path: "info", element: <PersonalInfo/>},
-        {path: "applied-jobs", element: <JobApplied/>}
+        {path: "applied-jobs", element: <JobApplied/>},
+        {path: "update", element: <EditProfile/>}
       ]
     }
   ])

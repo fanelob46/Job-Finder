@@ -6,7 +6,7 @@ import JobCard from "../components/JobCard"
 const JobsLayout = () => {
   return (
     <>
-        <header>
+        <header className="flex justify-center ">
             <VertiSearch/>
         </header>
         <main>

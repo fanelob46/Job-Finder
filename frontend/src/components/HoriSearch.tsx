@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function JobSearch() {
   return (
-    <div className="py-32 flex justify-center  ">
+    <div className="py-32 flex justify-center  bg-hero bg-center bg-cover h-[100vh] bg-fixed">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96 ">
         <h1 className="text-xl font-semibold text-gray-800">
           Search thousands of fresh jobs
