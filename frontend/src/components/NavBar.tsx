@@ -7,6 +7,7 @@ const NavBar = () => {
         <img src={logo} alt="" className="h-20"/>
       </div>
       <div className="flex space-x-3 uppercase pt-7">
+        
         <h1>Sign in</h1>
         <h1>/</h1>
         <h1>sign up</h1>

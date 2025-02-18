@@ -1,4 +1,5 @@
 import { FaSearch } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function JobSearch() {
   return (
@@ -27,11 +28,12 @@ export default function JobSearch() {
           <option>Finance</option>
           <option>Healthcare</option>
         </select>
-
-        <button className="bg-blue-600 text-white flex items-center justify-center w-full py-3 mt-6 rounded-lg hover:bg-blue-900">
-          <FaSearch className="mr-2" />
-          SEARCH
-        </button>
+        <Link to="/jobs">
+          <button className="bg-blue-600 text-white flex items-center justify-center w-full py-3 mt-6 rounded-lg hover:bg-blue-900">
+            <FaSearch className="mr-2" />
+            SEARCH
+          </button>
+        </Link>
       </div>
     </div>
   );

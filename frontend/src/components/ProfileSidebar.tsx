@@ -1,35 +1,37 @@
-import { MdOutlineAccountCircle } from "react-icons/md";
+import {
+  MdOutlineAccountCircle,
+  MdOutlineCheckBox
+} from "react-icons/md";
 import { RiAccountBox2Line } from "react-icons/ri";
-import { MdOutlineCheckBox } from "react-icons/md";
-
+import { Link } from "react-router-dom";
 
 
 const ProfileSidebar = () => {
   return (
-    <div className="bg-white flex justify-center py-52">
-      <div className="bg-slate-100   py-3">
-        <div className="flex space-x-3">
-          <div>
-            <MdOutlineAccountCircle className="text-6xl" />
-          </div>
-          <div>
-            <h1>Fanelo Baloyi</h1>
-            <button className="px-4  bg-blue-600 text-white rounded cursor-pointer hover:bg-blue-700">
-              Edit Profile
-            </button>
-          </div>
+    <div className="flex justify-center py-10 bg-gray-100 min-h-screen">
+      <div className="bg-white shadow-md w-64 rounded-lg overflow-hidden">
+        {/* Profile Section */}
+        <div className="flex flex-col items-center p-4 border-b">
+          <MdOutlineAccountCircle className="text-6xl text-gray-500" />
+          <h1 className="text-lg font-semibold mt-2">Fanelo Baloyi</h1>
+          <button className="text-xs bg-blue-600 text-white px-3 py-1 rounded mt-2 hover:bg-blue-700">
+            Edit Profile
+          </button>
         </div>
-        <div className="space-y-4 py-3">
-          <div className="flex">
-            <button className="flex px-4  bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-700 w-52">
-              <RiAccountBox2Line className="text-gray-100 text-2xl" /> Profile
+
+        {/* Navigation Items */}
+        <div className="py-2">
+          <Link to={"/profile/info"}>
+            <button className="flex items-center space-x-3 text-white bg-blue-500 px-4 py-3 w-full text-left font-medium">
+              <RiAccountBox2Line className="text-lg" />
+              <span>Profile</span>
             </button>
-          </div>
-          <div className="flex">
-            <button className="flex px-4  bg-blue-500 text-white rounded cursor-pointer hover:bg-blue-700 w-52">
-              <MdOutlineCheckBox className="text-gray-100 text-2xl" /> Jobs Applied
-            </button>
-          </div>
+          </Link>
+
+          <button className="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 px-4 py-3 w-full text-left font-medium">
+            <MdOutlineCheckBox className="text-lg" />
+            <span>Applied Jobs</span>
+          </button>
         </div>
       </div>
     </div>
