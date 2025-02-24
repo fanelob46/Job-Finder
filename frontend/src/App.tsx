@@ -13,6 +13,9 @@ import JobApplied from "./components/JobApplied"
 import SingUp from "./components/SingUp"
 import LogInForm from "./components/LogInForm"
 import EditProfile from "./components/EditProfile"
+import AddJob from "./components/AddJob"
+import AdminLayout from "./layouts/AdminLayout"
+import AdminSideBar from "./components/AdminSideBar"
 
 
 function App() {
@@ -32,6 +35,7 @@ function App() {
       children: [
         { index: true, element: <JobsLayout/> },
         
+        
       ]
     },
     {
@@ -41,6 +45,13 @@ function App() {
         { path: "info", element: <PersonalInfo/>},
         {path: "applied-jobs", element: <JobApplied/>},
         {path: "update", element: <EditProfile/>}
+      ]
+    },
+    {
+      path:"/admin", element:<AdminLayout/>,
+      children: [
+        { path: "dashboard", element: <AdminSideBar/>},
+        { path: "addJob", element: <AddJob/>}
       ]
     }
   ])
