@@ -4,8 +4,7 @@
   "main": "index.js",
   "scripts": {
     "server": "nodemon backend/server.js",
-     "client": "npm run dev --prefix frontend"
-
+    "client": "npm run dev --prefix frontend"
   },
   "type": "module",
   "keywords": [],
@@ -15,6 +14,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
+    "client": "^0.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -22,6 +22,7 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.7",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "run": "^1.5.0"
   }
 }

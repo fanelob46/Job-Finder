@@ -1,7 +1,29 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../Slices/userApiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { RootState } from "../store";
+import { AppDispatch } from "../store";
 
 
 const LogInForm = () => {
+const [login] = useLoginMutation();
+const dispatch: AppDispatch = useDispatch();
+const navigate = useNavigate();
+const { userInfo } = useSelector((state: RootState) => state.auth);
+const [loginError, setSLoginError] = useState("");
+
+useEffect(() => {
+  if(userInfo?.role == "admin"){
+    navigate("/admin")
+  } else {
+    navigate("/jobs")
+  }
+}, [navigate, userInfo])
+
+
+
+
   return (
     <div className="py-20 px-20 bg-white  gird place-items-center">
       <div className="pr-56">
