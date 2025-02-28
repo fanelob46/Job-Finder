@@ -7,9 +7,9 @@ export type createJobRequest = {
   location: string;
   category: string;
   salary: string;
-  vacansies: string;
+  vacancies: string;
   exprience: string;
-  description: string;
+  desc: string;
   requirements: string;
 };
 
@@ -56,7 +56,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
         method: "GET",
         
       }),
-    
+    providesTags:["Job"]
     }),
     createJob: builder.mutation<createJobResponse,createJobRequest>({
       query: (data) => ({
