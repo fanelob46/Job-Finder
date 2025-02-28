@@ -1,28 +1,42 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../Slices/userApiSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { RootState } from "../store";
-import { AppDispatch } from "../store";
+import { UserFormData } from "../definitions";
+import { useState } from "react";
+
+type LoginProps = {
+  name: string;
+  type: "signup" | "login" | "edit";
+  submitFunction: (userData: UserFormData) => Promise<void>;
+  error: string;
+};
 
 
-const LogInForm = () => {
-const [login] = useLoginMutation();
-const dispatch: AppDispatch = useDispatch();
-const navigate = useNavigate();
-const { userInfo } = useSelector((state: RootState) => state.auth);
-const [loginError, setSLoginError] = useState("");
+const LogInForm = ({ name, type, submitFunction, error }: LoginProps) => {
 
-useEffect(() => {
-  if(userInfo?.role == "admin"){
-    navigate("/admin")
-  } else {
-    navigate("/jobs")
-  }
-}, [navigate, userInfo])
+ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+   e.preventDefault();
 
+   const formData = new FormData(e.currentTarget);
+   const data = {
+     firstName: formData.get("firstName")?.toString() || "",
+     lastName: formData.get("lastName")?.toString() || "",
+     email: formData.get("email")?.toString() || "",
+     password: formData.get("password")?.toString() || "",
+     confirmPassword: formData.get("confirmPassword")?.toString() || "",
+     role: formData.get("role")?.toString() || "",
+     location: formData.get("location")?.toString() || "",
+     contact: formData.get("contact")?.toString() || "",
+     profileUrl: formData.get("profileUrl")?.toString() || "",
+     cvUrl : formData.get("cvUrl")?.toString() || ""
+   };
 
+   console.log(data);
 
+   try {
+     await submitFunction(data);
+   } catch (error) {
+     console.error("Error submitting form:", error);
+   }
+ };
 
   return (
     <div className="py-20 px-20 bg-white  gird place-items-center">
@@ -31,12 +45,12 @@ useEffect(() => {
         <hr className="w-[750px]" />
       </div>
 
-      <form className="mt-8 space-y-4 border border-gray-400 px-10 py-10 bg-[#f8f4f4]">
+      <form className="mt-8 space-y-4 border border-gray-400 px-10 py-10 bg-[#f8f4f4] " onSubmit={handleSubmit}>
         <div>
           <label className="text-gray-800 text-sm mb-2 block">User name</label>
           <div className="relative flex items-center">
             <input
-              name="username"
+              name="email"
               type="text"
               required
               className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
@@ -85,7 +99,7 @@ useEffect(() => {
 
         <div className="!mt-8">
           <button
-            type="button"
+            type="submit"
             className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
           >
             Sign in
@@ -103,6 +117,6 @@ useEffect(() => {
       </form>
     </div>
   );
-}
+};
 
 export default LogInForm

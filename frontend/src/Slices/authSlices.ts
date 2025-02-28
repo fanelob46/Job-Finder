@@ -3,13 +3,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 // Define the type for user information
 interface UserInfo {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   password: string;
+  contact: string;
   email: string;
   role: string;
   location: string;
   cvUrl:string;
+  profileUrl: string;
   token?: string; // Include token if applicable
 }
 

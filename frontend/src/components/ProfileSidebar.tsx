@@ -4,6 +4,7 @@ import {
 } from "react-icons/md";
 import { RiAccountBox2Line } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import Logout from "./Logout";
 
 
 const ProfileSidebar = () => {
@@ -14,7 +15,7 @@ const ProfileSidebar = () => {
         <div className="flex flex-col items-center p-4 border-b">
           <MdOutlineAccountCircle className="text-6xl text-gray-500" />
           <h1 className="text-lg font-semibold mt-2">Fanelo Baloyi</h1>
-          <Link to={"/profile/update"}>
+          <Link to={"/profile/edit"}>
             <button className="text-xs bg-blue-600 text-white px-3 py-1 rounded mt-2 hover:bg-blue-700">
               Edit Profile
             </button>
@@ -34,6 +35,12 @@ const ProfileSidebar = () => {
             <button className="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 px-4 py-3 w-full text-left font-medium">
               <MdOutlineCheckBox className="text-lg" />
               <span>Applied Jobs</span>
+            </button>
+          </Link>
+          <Link to={"/profile/applied-jobs"}>
+            <button className="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 px-4 py-3 w-full text-left font-medium">
+              <MdOutlineCheckBox className="text-lg" />
+              <Logout/>
             </button>
           </Link>
         </div>

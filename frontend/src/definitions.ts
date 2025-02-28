@@ -1,14 +1,10 @@
 export type User = {
   _id: string;
-  password: string;
   firstName: string;
   lastName: string;
   email: string;
   location: string;
   contact: string;
-  cvUrl: string;
-  profileUrl : string;
-  secretKey?: string;
   role: string;
 };
 
@@ -103,10 +99,19 @@ export type RegisterErrorResponse = {
   };
 };
 
-export interface Job {
+export type Job = {
   _id: string;
   title: string;
-  description: string;
-  date: string;
-  tag: string;
-}
+  
+
+  contact: string;
+  type: string;
+  location: string;
+  salary: string;
+};
+
+export type jobResponse = {
+  success : boolean;
+  message : string;
+  data:Partial<Job>[]
+};

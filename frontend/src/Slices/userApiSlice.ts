@@ -10,17 +10,18 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-  token: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  success : boolean;
+  message: string
+  _id : string;
+  firstname: string;
+  lastname: string;
   role: string;
-  id: string;
+  location: string;
+  contact: string;
+  email: string;
 }
 
 interface RegisterRequest {
-  
   firstName: string;
   lastName: string;
   email: string;
@@ -28,8 +29,19 @@ interface RegisterRequest {
   role: string;
   location: string;
   cvUrl: string;
-  
 }
+export type GetProfileResponse = {
+  data: User;
+};
+
+export type GetProfileRequest = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  location: string;
+  contact: string;
+};
 
 interface RegisterResponse {
   message: string;
@@ -46,18 +58,22 @@ interface UpdateUserRequest {
   lastName?: string;
   email?: string;
   password?: string;
-  role?: string;
   location?: string;
-  cvUrl?: string;
+  contact?: string;
+  
 }
 
 interface UpdateUserResponse {
   id: string;
-  firstName: string;
-  lastName: string;
-  password: string;
+  firstname: string;
+  lastname: string;
   email: string;
   role: string;
+  location: string;
+  contact: string;
+  cvUrl: string;
+  profileUrl: string;
+  password:string
 }
 
 interface User {
@@ -65,10 +81,13 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   role: string;
+  contact:string;
   createdAt: string;
   location: string;
   cvUrl: string;
+  profileUrl:string;
 }
 
 interface GetAllUsersResponse {
@@ -86,14 +105,14 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: `${USERS_URL}/login`,
+        url: `http://localhost:5000/api/users/login`,
         method: "POST",
         body: data,
       }),
     }),
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (data) => ({
-        url: `${USERS_URL}`,
+        url: `http://localhost:5000/api/users/logout`,
         method: "POST",
         body: data,
       }),
@@ -106,15 +125,22 @@ export const usersApiSlice = apiSlice.injectEndpoints({
     }),
     updateUser: builder.mutation<UpdateUserResponse, UpdateUserRequest>({
       query: (data) => ({
-        url: `${USERS_URL}/profile`,
+        url: `http://localhost:5000/api/users/profile`,
         method: "PUT",
+        body: data,
+      }),
+    }),
+    getProfile: builder.mutation<GetProfileResponse, GetProfileRequest>({
+      query: (data) => ({
+        url: "http://localhost:5000/api/users/profile",
+        method: "GET",
         body: data,
       }),
     }),
 
     getAllUsers: builder.query<GetAllUsersResponse, void>({
       query: () => ({
-        url: `${ADMIN_URL}/admin`,
+        url: `$http://localhost:5000/api/users/admin`,
         method: "GET",
       }),
       providesTags: ["User"],
@@ -137,4 +163,5 @@ export const {
   useUpdateUserMutation,
   useGetAllUsersQuery,
   useDeleteUserMutation,
+  useGetProfileMutation
 } = usersApiSlice;

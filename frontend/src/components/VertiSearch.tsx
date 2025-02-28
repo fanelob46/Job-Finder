@@ -7,7 +7,7 @@ const VertiSearch = () => {
         placeholder="Job title, skill or company"
       />
       <select className="bg-transparent border-b border-white text-white focus:outline-none w-40">
-        <option className="text-black" selected>
+        <option className="text-black" value="GP">
           Gauteng
         </option>
         <option className="text-black" value="WC">

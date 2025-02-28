@@ -5,7 +5,7 @@ import { protect } from "../middlewares/authMiddleWare.js";
 const router = express.Router();
 
 router.post("/",protect, addJob);
-router.get("/", protect, GetallJobs);
+router.get("/",protect, GetallJobs);
 router.put("/:id", protect, updateJob);
 router.delete("/:id", protect, deleteJob);
 router.get("/applications", protect, getJobApplications);

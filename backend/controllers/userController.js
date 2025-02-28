@@ -45,9 +45,17 @@ export const Login = AsyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
-    res
-      .status(200)
-      .json({ success: true, message: "Successfully logged in", data: user });
+    res.json({
+      success: true,
+      message: "Successfully logged in",
+      _id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+      role: user.role,
+      location: user.location,
+      contact : user.contact
+    });
   } else {
     res.status(401);
     throw new Error("Invalid email or password");

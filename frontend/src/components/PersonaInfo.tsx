@@ -3,8 +3,37 @@ import { MdOutlineEmail } from "react-icons/md";
 import { IoLocationOutline } from "react-icons/io5";
 import { AiOutlineCar } from "react-icons/ai";
 import { BiWorld } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../store";
+import { useEffect, useState } from "react";
+import { useGetProfileMutation } from "../Slices/userApiSlice";
+
 
 const PersonalInfo = () => {
+
+
+const { userInfo } = useSelector((state: RootState) => state.auth);
+// const [firstName, setFirstName] = useState(userInfo?.firstName || "");
+// const [lastName, setLastName] = useState(userInfo?.lastName || "");
+// const [email, setEmail] = useState(userInfo?.email || "");
+// const [location, setLocation] = useState(userInfo?.location || "");
+
+
+
+
+ const dispatch = useDispatch();
+
+ const [getProfile] = useGetProfileMutation();
+
+ console.log("userInfo:", userInfo);
+
+//  useEffect(() => {
+//    if (userInfo) {
+//      setEmail(userInfo.email );
+//      setLocation(userInfo.location);
+//    }
+//  }, [userInfo]);
+
   return (
     <div className="bg-white border rounded-md p-4 shadow-sm">
       {/* Section Title */}
@@ -18,18 +47,18 @@ const PersonalInfo = () => {
         {/* Phone Number */}
         <div className="flex items-center space-x-2">
           <FaPhone className="text-gray-400" />
-          <span>+27 736206484</span>
+          <span>{userInfo?.contact}</span>
         </div>
         {/* ID Number */}
         <div className="flex items-center space-x-2">
           <FaIdCard className="text-gray-400" />
-          <span>9509266454082</span>
+          <span>{userInfo?.firstname}</span>
         </div>
 
         {/* Email Address */}
         <div className="flex items-center space-x-2">
           <MdOutlineEmail className="text-gray-400" />
-          <span>fanelob46@gmail.com</span>
+          <span>{userInfo?.email}</span>
         </div>
         {/* Language */}
         <div className="flex items-center space-x-2">
@@ -40,18 +69,14 @@ const PersonalInfo = () => {
         {/* Location */}
         <div className="flex items-center space-x-2">
           <IoLocationOutline className="text-gray-400" />
-          <span>Johannesburg, South Africa</span>
+          <span>{userInfo?.location}</span>
         </div>
-        {/* Driver's License */}
-        <div className="flex items-center space-x-2">
-          <AiOutlineCar className="text-gray-400" />
-          <span>None</span>
-        </div>
+      
 
         {/* Citizenship */}
         <div className="flex items-center space-x-2 col-span-2">
           <FaIdCard className="text-gray-400" />
-          <span>African Male Citizen / Resident with ID</span>
+          <span>{userInfo?.lastname}</span>
         </div>
       </div>
     </div>

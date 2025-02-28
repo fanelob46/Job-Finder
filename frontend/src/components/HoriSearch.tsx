@@ -1,7 +1,7 @@
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-export default function JobSearch() {
+export default function HoriSearch() {
   return (
     <div className="py-32 flex justify-center  bg-hero bg-center bg-cover h-[100vh] bg-fixed">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96 ">

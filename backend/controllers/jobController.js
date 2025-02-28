@@ -51,7 +51,10 @@ export const addJob = AsyncHandler(async (req, res) => {
 
 
 export const GetallJobs = AsyncHandler(async (req, res) => {
+
+  
   const userId = req.user._id;
+  
 
   if (!mongoose.isValidObjectId(userId)) {
     return res.status(400).json({

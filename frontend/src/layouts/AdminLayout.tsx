@@ -7,7 +7,7 @@ import NavBar from "../components/NavBar";
 const AdminLayout = () => {
   return (
     <div className="grid grid-cols-16 h-screen">
-      <NavBar />
+      
       <AdminSideBar />
       <div
         className=" col-span-14 h-[90vh] 
