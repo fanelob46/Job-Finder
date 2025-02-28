@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCreateJobMutation } from "../Slices/jobApiSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const AddJob = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +15,8 @@ const AddJob = () => {
     desc:"",
     
   });
+
+  const naviagte = useNavigate();
 
   const [createJob, { isLoading, isError, isSuccess, error }] =
     useCreateJobMutation();
@@ -46,6 +48,7 @@ const AddJob = () => {
     } catch (err) {
       console.error("Failed to add job:", err);
     }
+    naviagte("/admin/alljobs");
   };
 
   return (

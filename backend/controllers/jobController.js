@@ -134,3 +134,17 @@ export const getJobApplications = AsyncHandler(async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 });
+
+export const liveFeedJobs = AsyncHandler(async(req, res) => {
+  try {
+    const jobs = await Jobs.find({  });
+    res.status(200).json({
+      success: true,
+      message: "Successfully fetched jobs",
+      data: jobs,
+    });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+})

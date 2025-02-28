@@ -128,6 +128,46 @@ export const CheckRole = AsyncHandler(async (req, res) => {
   }
 });
 
+
+
+
+// Apply for a Job
+export const applyForJob = AsyncHandler(async (req, res) => {
+  try {
+    const { jobId } = req.body;
+    const userId = req.user._id; 
+
+    
+    const job = await Jobs.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ success: false, message: "Job not found" });
+    }
+
+    
+    if (job.applications.includes(userId)) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "You have already applied for this job",
+        });
+    }
+
+    // Add user to applications array
+    job.applications.push(userId);
+    await job.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Application submitted successfully",
+    });
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+    res.status(500).json({ success: false, message: "Server Error" });
+  }
+});
+
+
 // Get Jobs User Applied For
 export const getUserApplications = AsyncHandler(async (req, res) => {
   try {

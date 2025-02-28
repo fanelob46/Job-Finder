@@ -1,6 +1,8 @@
 import { FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { IoAdd } from "react-icons/io5";
+import { IoBriefcaseOutline } from "react-icons/io5";
+
 
 
 const AdminSideBar = () => {
@@ -12,11 +14,15 @@ const AdminSideBar = () => {
             href="/admin/alljobs"
             className="hover:font-semibold flex items-center gap-5"
           >
-            <FaUsers className="text-[var(--accent)] size-6" />
-            <p>Users</p>
+            <IoBriefcaseOutline className="text-[var(--accent)] size-6" />
+            <p>JOBS</p>
           </a>
-          <Link to={"addJob"} className="text-[var(--accent)] size-6">
-            <IoAdd />
+          <Link
+            to={"addJob"}
+            className="hover:font-semibold flex items-center gap-5"
+          >
+            <IoAdd className="text-[var(--accent)] size-6" />
+            <p> Add JOB</p>
           </Link>
         </div>
       </div>

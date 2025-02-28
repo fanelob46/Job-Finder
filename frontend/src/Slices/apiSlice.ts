@@ -7,6 +7,6 @@ const baseQuery = fetchBaseQuery({
 
 export const apiSlice = createApi({
   baseQuery,
-  tagTypes: ["User", "Job"], // this is fort caching data
+  tagTypes: ["User", "Job", "JobApplication", "UserApplications"], // this is fort caching data
   endpoints: () => ({}),
 });

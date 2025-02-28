@@ -102,12 +102,12 @@ export type RegisterErrorResponse = {
 export type Job = {
   _id: string;
   title: string;
-  
-
-  contact: string;
+  exprience:string;
   type: string;
   location: string;
   salary: string;
+  requirements:string;
+  desc:string;
 };
 
 export type jobResponse = {
