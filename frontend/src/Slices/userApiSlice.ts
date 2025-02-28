@@ -22,14 +22,20 @@ interface LoginResponse {
 }
 
 interface RegisterRequest {
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   email: string;
   password: string;
   role: string;
+  contact:string;
+  createdAt: string;
   location: string;
   cvUrl: string;
+  profileUrl:string;
 }
+
+
+
 export type GetProfileResponse = {
   data: User;
 };
@@ -46,11 +52,15 @@ export type GetProfileRequest = {
 interface RegisterResponse {
   message: string;
   id: string;
-  firstName: string;
-  lastName: string;
-  password: string;
+  firstname: string;
+  lastname: string;
   email: string;
+  password: string;
   role: string;
+  contact: string;
+  createdAt: string;
+  location: string;
+
 }
 
 interface UpdateUserRequest {

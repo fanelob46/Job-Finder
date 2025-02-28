@@ -17,8 +17,8 @@ const LogInForm = ({ name, type, submitFunction, error }: LoginProps) => {
 
    const formData = new FormData(e.currentTarget);
    const data = {
-     firstName: formData.get("firstName")?.toString() || "",
-     lastName: formData.get("lastName")?.toString() || "",
+     firstname: formData.get("firstname")?.toString() || "",
+     lastname: formData.get("lastname")?.toString() || "",
      email: formData.get("email")?.toString() || "",
      password: formData.get("password")?.toString() || "",
      confirmPassword: formData.get("confirmPassword")?.toString() || "",
