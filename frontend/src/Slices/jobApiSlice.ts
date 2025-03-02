@@ -26,7 +26,7 @@ export type UpdateJobResponse = {
   location: string;
   category: string;
   salary: string;
-  vacansies: string;
+  vacancies: string;
   exprience: string;
   description: string;
   requirements: string;
@@ -38,7 +38,7 @@ export type UpdateJobRequest = {
   location?: string;
   category?: string;
   salary?: string;
-  vacansies?: string;
+  vacancies?: string;
   exprience?: string;
   description?: string;
   requirements?: string;
@@ -48,26 +48,11 @@ export type deleteJobResponse = {
   message: string;
 };
 
-// Define the Job Application Response Type
-export type JobApplicationResponse = {
-  success: boolean;
-  data: {
-    jobId: string;
-    title: string;
-    applicantsCount: number;
-    applicants: {
-      firstname: string;
-      lastname: string;
-      email: string;
-    }[];
-  }[];
-};
 
-// Define User Applied Jobs Response Type
-export type UserApplicationsResponse = {
+
+export type ApplyForJobResponse = {
   success: boolean;
   message: string;
-  data: Job[];
 };
 
 export const jobApiSlice = apiSlice.injectEndpoints({
@@ -79,6 +64,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Job"],
     }),
+
     liveFeedJobs: builder.query<jobResponse, void>({
       query: () => ({
         url: "http://localhost:5000/api/jobs/live",
@@ -86,6 +72,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Job"],
     }),
+
     createJob: builder.mutation<createJobResponse, createJobRequest>({
       query: (data) => ({
         url: "http://localhost:5000/api/jobs",
@@ -93,12 +80,14 @@ export const jobApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+
     updateJob: builder.mutation<UpdateJobResponse, UpdateJobRequest>({
       query: (id) => ({
         url: `http://localhost:5000/api/jobs/${id}`,
         method: "PUT",
       }),
     }),
+
     deleteJob: builder.mutation<deleteJobResponse, string>({
       query: (id) => ({
         url: `http://localhost:5000/api/jobs/${id}`,
@@ -106,23 +95,9 @@ export const jobApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    getJobApplications: builder.query<JobApplicationResponse, void>({
-      query: () => ({
-        url: "http://localhost:5000/api/jobs/applications",
-        method: "GET",
-      }),
-      providesTags: ["JobApplication"],
-    }),
+   
 
     
-    getUserApplications: builder.query<UserApplicationsResponse, void>({
-      query: () => ({
-        url: "http://localhost:5000/api/jobs/user-applications",
-        method: "GET",
-        credentials: "include", 
-      }),
-      providesTags: ["UserApplications"],
-    }),
   }),
 });
 
@@ -132,6 +107,5 @@ export const {
   useGetAllJobsQuery,
   useLiveFeedJobsQuery,
   useUpdateJobMutation,
-  useGetJobApplicationsQuery, 
-  useGetUserApplicationsQuery, 
+
 } = jobApiSlice;

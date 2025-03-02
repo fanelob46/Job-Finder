@@ -1,18 +1,19 @@
+import { Job } from "../definitions";
 import { apiSlice } from "./apiSlice";
 
 const USERS_URL = "/api/users";
 const ADMIN_URL = "/api/";
 
-// Define the types for the request payloads and responses
+
 interface LoginRequest {
   email: string;
   password: string;
 }
 
 interface LoginResponse {
-  success : boolean;
-  message: string
-  _id : string;
+  success: boolean;
+  message: string;
+  _id: string;
   firstname: string;
   lastname: string;
   role: string;
@@ -27,14 +28,12 @@ interface RegisterRequest {
   email: string;
   password: string;
   role: string;
-  contact:string;
+  contact: string;
   createdAt: string;
   location: string;
   cvUrl: string;
-  profileUrl:string;
+  profileUrl: string;
 }
-
-
 
 export type GetProfileResponse = {
   data: User;
@@ -60,7 +59,6 @@ interface RegisterResponse {
   contact: string;
   createdAt: string;
   location: string;
-
 }
 
 interface UpdateUserRequest {
@@ -70,7 +68,6 @@ interface UpdateUserRequest {
   password?: string;
   location?: string;
   contact?: string;
-  
 }
 
 interface UpdateUserResponse {
@@ -83,7 +80,7 @@ interface UpdateUserResponse {
   contact: string;
   cvUrl: string;
   profileUrl: string;
-  password:string
+  password: string;
 }
 
 interface User {
@@ -93,12 +90,32 @@ interface User {
   email: string;
   password: string;
   role: string;
-  contact:string;
+  contact: string;
   createdAt: string;
   location: string;
   cvUrl: string;
-  profileUrl:string;
+  profileUrl: string;
 }
+
+
+export type JobApplicationResponse = {
+  success: boolean;
+  data: {
+    jobId: string;
+    title: string;
+    applicantsCount: number;
+    applicants: {
+      firstname: string;
+      lastname: string;
+      email: string;
+    }[];
+  }[];
+};
+
+
+export type ApplyForJobRequest = {
+  jobId: string;
+};
 
 interface GetAllUsersResponse {
   data?: User[];
@@ -110,6 +127,13 @@ interface DeleteUserResponse {
   success: boolean;
   message: string;
 }
+
+
+export type UserApplicationsResponse = {
+  success: boolean;
+  message: string;
+  data: Job[];
+};
 
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -163,6 +187,36 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+
+    getUserApplications: builder.query<UserApplicationsResponse, void>({
+      query: () => ({
+        url: "http://localhost:5000/api/users/jobs/applications",
+        method: "GET",
+        credentials: "include",
+      }),
+      providesTags: ["UserApplications"],
+    }),
+
+    
+    applyForJob: builder.mutation<
+      { success: boolean; message: string },
+      { jobId: string }
+    >({
+      query: ({ jobId }) => ({
+        url: `http://localhost:5000/api/users/jobs/apply`,
+        method: "POST",
+        body: { jobId },
+        // credentials: "include",
+      }),
+    }),
+
+    getJobApplications: builder.query<JobApplicationResponse, void>({
+      query: () => ({
+        url: "http://localhost:5000/api/users/jobs/applications",
+        method: "GET",
+      }),
+      providesTags: ["JobApplication"],
+    }),
   }),
 });
 
@@ -173,5 +227,8 @@ export const {
   useUpdateUserMutation,
   useGetAllUsersQuery,
   useDeleteUserMutation,
-  useGetProfileMutation
+  useGetProfileMutation,
+  useGetUserApplicationsQuery,
+  useApplyForJobMutation,
+  useGetJobApplicationsQuery,
 } = usersApiSlice;

@@ -1,5 +1,6 @@
-import {mongoose, Schema} from "mongoose";
+import { mongoose, Schema } from "mongoose";
 import bcrypt from "bcryptjs";
+import { application } from "express";
 
 const UserSchema = mongoose.Schema(
   {
@@ -7,7 +8,11 @@ const UserSchema = mongoose.Schema(
     lastname: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'company_manager', 'user'], default: 'user' },
+    role: {
+      type: String,
+      enum: ["admin", "company_manager", "user"],
+      default: "user",
+    },
     contact: { type: String },
     location: { type: String },
     profileUrl: { type: String },

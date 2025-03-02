@@ -1,4 +1,5 @@
 import AsyncHandler from "express-async-handler";
+import bcrypt from "bcryptjs";
 import User from "../models/UserModel.js";
 import Jobs from "../models/JobsModel.js";
 import generateToken from "../utils/generateToken.js";
@@ -30,7 +31,7 @@ export const RegisterUser = AsyncHandler(async (req, res) => {
   });
 
   if (newUser) {
-    generateToken(res, newUser._id);
+    await generateToken(res, newUser._id);
     res.status(201).json({ success: true, data: newUser });
   } else {
     res.status(400);
@@ -44,7 +45,7 @@ export const Login = AsyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
+    await generateToken(res, user._id);
     res.json({
       success: true,
       message: "Successfully logged in",
@@ -54,7 +55,7 @@ export const Login = AsyncHandler(async (req, res) => {
       email: user.email,
       role: user.role,
       location: user.location,
-      contact : user.contact
+      contact: user.contact,
     });
   } else {
     res.status(401);
@@ -87,7 +88,7 @@ export const updateProfile = AsyncHandler(async (req, res) => {
     user.role = req.body.role || user.role;
 
     if (req.body.password) {
-      user.password = req.body.password;
+      user.password = await bcrypt.hash(req.body.password, 10);
     }
 
     const updatedUser = await user.save();
@@ -113,7 +114,7 @@ export const updateProfile = AsyncHandler(async (req, res) => {
 // Logout User
 export const logoutUser = AsyncHandler(async (req, res) => {
   res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
-  res.status(200).json({ message: "Sad to see you go" });
+  res.status(200).json({ success: true, message: "Sad to see you go" });
 });
 
 // Check User Role
@@ -128,53 +129,49 @@ export const CheckRole = AsyncHandler(async (req, res) => {
   }
 });
 
-
-
-
 // Apply for a Job
 export const applyForJob = AsyncHandler(async (req, res) => {
-  try {
-    const { jobId } = req.body;
-    const userId = req.user._id; 
+  const { jobId } = req.body;
+  const userId = req.user._id;
 
-    
-    const job = await Jobs.findById(jobId);
-    if (!job) {
-      return res.status(404).json({ success: false, message: "Job not found" });
-    }
+  const alreadyApplied = await Jobs.findOne({
+    _id: jobId,
+    applications: userId,
+  });
 
-    
-    if (job.applications.includes(userId)) {
-      return res
-        .status(400)
-        .json({
-          success: false,
-          message: "You have already applied for this job",
-        });
-    }
-
-    // Add user to applications array
-    job.applications.push(userId);
-    await job.save();
-
-    res.status(200).json({
-      success: true,
-      message: "Application submitted successfully",
+  if (alreadyApplied) {
+    return res.status(400).json({
+      success: false,
+      message: "You have already applied for this job",
     });
-  } catch (error) {
-    console.error(`Error: ${error.message}`);
-    res.status(500).json({ success: false, message: "Server Error" });
   }
+
+  const job = await Jobs.findByIdAndUpdate(
+    jobId,
+    { $push: { applications: userId } },
+    { new: true }
+  );
+
+  if (!job) {
+    return res.status(404).json({ success: false, message: "Job not found" });
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "Application submitted successfully",
+  });
 });
 
-
+// Get Jobs User Applied For
 // Get Jobs User Applied For
 export const getUserApplications = AsyncHandler(async (req, res) => {
   try {
-    const jobs = await Jobs.find({ application: req.user._id }).populate(
-      "userId",
-      "firstname lastname email"
-    );
+    const jobs = await Jobs.find({ applications: req.user._id })
+      .populate("applications", "firstname lastname email");
+
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({ success: false, message: "No applications found" });
+    }
 
     res.status(200).json({
       success: true,
@@ -186,3 +183,4 @@ export const getUserApplications = AsyncHandler(async (req, res) => {
     res.status(500).json({ success: false, message: "Server Error" });
   }
 });
+

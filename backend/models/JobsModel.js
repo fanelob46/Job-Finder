@@ -13,7 +13,7 @@ const jobSchema = new mongoose.Schema(
     requirements: { type: String },
     application: [{ type: Schema.Types.ObjectId, ref: "User" }],
     userId: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    aapplications: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    applications: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
 );
