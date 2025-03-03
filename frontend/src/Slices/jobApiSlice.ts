@@ -20,7 +20,7 @@ export type createJobResponse = {
 };
 
 export type UpdateJobResponse = {
-  id: string;
+  _id: string;
   title: string;
   type: string;
   location: string;
@@ -28,11 +28,13 @@ export type UpdateJobResponse = {
   salary: string;
   vacancies: string;
   exprience: string;
-  description: string;
+  desc: string;
   requirements: string;
+  applications:[];
 };
 
 export type UpdateJobRequest = {
+  id?:string;
   title?: string;
   type?: string;
   location?: string;
@@ -81,10 +83,14 @@ export const jobApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    updateJob: builder.mutation<UpdateJobResponse, UpdateJobRequest>({
-      query: (id) => ({
+    updateJob: builder.mutation<
+      UpdateJobResponse,
+      { id: string; data: UpdateJobRequest }
+    >({
+      query: ({ id, data }) => ({
         url: `http://localhost:5000/api/jobs/${id}`,
         method: "PUT",
+        body: data,
       }),
     }),
 
@@ -94,10 +100,6 @@ export const jobApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
-
-   
-
-    
   }),
 });
 

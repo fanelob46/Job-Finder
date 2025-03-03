@@ -80,6 +80,17 @@ export const GetallJobs = AsyncHandler(async (req, res) => {
 export const updateJob = AsyncHandler(async (req, res) => {
   const { id } = req.params;
   const jobData = req.body;
+  const userId = req.user._id;
+
+  // Check if the user is authorized to update the job
+  const loginUser = await User.findById(userId);
+  if (!loginUser || !["admin", "company_manager"].includes(loginUser.role)) {
+    return res.status(403).json({
+      success: false,
+      message:
+        "Access denied. Only admin and company managers can update jobs.",
+    });
+  }
 
   try {
     const updatedJob = await Jobs.findByIdAndUpdate(id, jobData, { new: true });
@@ -90,6 +101,7 @@ export const updateJob = AsyncHandler(async (req, res) => {
 
     res.status(200).json({ success: true, data: updatedJob });
   } catch (error) {
+    console.error("Error updating job:", error.message);
     res.status(500).json({ success: false, message: "Server Error" });
   }
 });

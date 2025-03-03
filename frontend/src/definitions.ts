@@ -108,6 +108,7 @@ export type Job = {
   salary: string;
   requirements: string;
   desc: string;
+  category: string;
   applications: string[];
 };
 
