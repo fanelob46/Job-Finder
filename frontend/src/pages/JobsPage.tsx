@@ -50,8 +50,10 @@ const JobsPage = () => {
               >
                 <h1 className="text-lg font-semibold">{job.title}</h1>
                 <p className="text-sm text-gray-600">{job.type}</p>
-                <p className="text-sm">Experience: {job.exprience}</p>
+                <p className="text-sm">Exprience: {job.exprience}</p>
                 <p className="text-sm">Location: {job.location}</p>
+                <p className="text-sm">Category: {job.category}</p>
+
                 <p className="text-sm">Requirements: {job.requirements}</p>
                 <p className="text-sm">Description: {job.desc}</p>
                 <p className="text-sm font-bold">Salary: R{job.salary}</p>

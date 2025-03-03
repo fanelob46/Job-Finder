@@ -8,7 +8,7 @@ const jobSchema = new mongoose.Schema(
     category: { type: String, required: true },
     salary: { type: Number, required: true },
     vacancies: { type: Number },
-    experience: { type: Number, default: 0 },
+    exprience: { type: Number, default: 0 },
     desc: { type: String },
     requirements: { type: String },
     application: [{ type: Schema.Types.ObjectId, ref: "User" }],

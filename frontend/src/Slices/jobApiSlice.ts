@@ -83,14 +83,11 @@ export const jobApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    updateJob: builder.mutation<
-      UpdateJobResponse,
-      { id: string; data: UpdateJobRequest }
-    >({
-      query: ({ id, data }) => ({
+    updateJob: builder.mutation<UpdateJobResponse, { id: string; data: UpdateJobRequest }>({
+      query: ({id, data}) => ({
         url: `http://localhost:5000/api/jobs/${id}`,
         method: "PUT",
-        body: data,
+        body: data
       }),
     }),
 
@@ -100,6 +97,10 @@ export const jobApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+
+   
+
+    
   }),
 });
 

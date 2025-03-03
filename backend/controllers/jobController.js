@@ -12,7 +12,7 @@ export const addJob = AsyncHandler(async (req, res) => {
     category,
     salary,
     vacancies,
-    experience,
+    exprience,
     desc,
     requirements,
   } = req.body;
@@ -35,7 +35,7 @@ export const addJob = AsyncHandler(async (req, res) => {
       category,
       salary,
       vacancies,
-      experience,
+      exprience,
       desc,
       requirements,
       userId,

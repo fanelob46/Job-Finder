@@ -43,7 +43,7 @@ const AddJob = () => {
         vacancies: "",
         desc: "",
         requirements: "",
-        exprience:"",
+        exprience: "",
       });
     } catch (err) {
       console.error("Failed to add job:", err);
@@ -99,6 +99,12 @@ const AddJob = () => {
             type: "number",
             placeholder: "Enter number of vacancies",
           },
+          {
+            label: "Exprience",
+            name: "exprience",
+            type: "number",
+            placeholder: "Enter number of exprience",
+          },
         ].map((field) => (
           <div key={field.name}>
             <label className="text-gray-800 text-sm mb-2 block">
@@ -121,10 +127,9 @@ const AddJob = () => {
             Job Description
           </label>
           <textarea
-            name="description"
+            name="desc"
             value={formData.desc} // Ensures controlled input
             onChange={handleChange} // Allows user input
-            
             className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
             placeholder="Enter job description"
             rows={4}
