@@ -103,6 +103,7 @@ export const updateProfile = AsyncHandler(async (req, res) => {
         location: updatedUser.location,
         contact: updatedUser.contact,
         role: updatedUser.role,
+        
       },
     });
   } else {

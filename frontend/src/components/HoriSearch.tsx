@@ -4,8 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function HoriSearch() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [location, setLocation] = useState("jozi");
-  const [category, setCategory] = useState("Information Technology");
+  const [location, setLocation] = useState("");
+  const [category, setCategory] = useState("");
   const navigate = useNavigate();
 
   const handleSearch = () => {
@@ -31,36 +31,29 @@ export default function HoriSearch() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="border-b-2 border-gray-300 p-2 w-full mt-2 focus:outline-none"
         />
-
-        <select
+        <input
+          type="text"
+          placeholder="Job Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="border-b-2 border-gray-300 p-2 w-full mt-4 focus:outline-none"
-        >
-          <option>Gauteng</option>
-          <option>Western Cape</option>
-          <option>KwaZulu-Natal</option>
-          <option>Eastern Cape</option>
-        </select>
-
-        <select
+          className="border-b-2 border-gray-300 p-2 w-full mt-2 focus:outline-none"
+        />
+        <input
+          type="text"
+          placeholder="Job Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="border-b-2 border-gray-300 p-2 w-full mt-4 focus:outline-none"
-        >
-          <option>Information Technology</option>
-          <option>Engineering</option>
-          <option>Finance</option>
-          <option>Healthcare</option>
-        </select>
-
-        <button
-          onClick={handleSearch}
-          className="bg-blue-600 text-white flex items-center justify-center w-full py-3 mt-6 rounded-lg hover:bg-blue-900"
-        >
-          <FaSearch className="mr-2" />
-          SEARCH
-        </button>
+          className="border-b-2 border-gray-300 p-2 w-full mt-2 focus:outline-none"
+        />
+        <Link to="/jobs">
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 text-white flex items-center justify-center w-full py-3 mt-6 rounded-lg hover:bg-blue-900"
+          >
+            <FaSearch className="mr-2" />
+            SEARCH
+          </button>
+        </Link>
       </div>
     </div>
   );

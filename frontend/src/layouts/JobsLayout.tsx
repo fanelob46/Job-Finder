@@ -1,5 +1,5 @@
 
-import VertiSearch from "../components/VertiSearch"
+
 import JobCard from "../components/JobCard"
 
 
@@ -7,7 +7,7 @@ const JobsLayout = () => {
   return (
     <>
         <header className="flex justify-center ">
-            <VertiSearch/>
+            {/* <VertiSearch/> */}
         </header>
         <main>
             <JobCard/>

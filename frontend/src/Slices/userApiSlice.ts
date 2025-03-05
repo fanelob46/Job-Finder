@@ -4,7 +4,6 @@ import { apiSlice } from "./apiSlice";
 const USERS_URL = "/api/users";
 const ADMIN_URL = "/api/";
 
-
 interface LoginRequest {
   email: string;
   password: string;
@@ -62,8 +61,8 @@ interface RegisterResponse {
 }
 
 interface UpdateUserRequest {
-  firstName?: string;
-  lastName?: string;
+  firstname?: string;
+  lastname?: string;
   email?: string;
   password?: string;
   location?: string;
@@ -78,8 +77,6 @@ interface UpdateUserResponse {
   role: string;
   location: string;
   contact: string;
-  cvUrl: string;
-  profileUrl: string;
   password: string;
 }
 
@@ -97,7 +94,6 @@ interface User {
   profileUrl: string;
 }
 
-
 export type JobApplicationResponse = {
   success: boolean;
   data: {
@@ -111,7 +107,6 @@ export type JobApplicationResponse = {
     }[];
   }[];
 };
-
 
 export type ApplyForJobRequest = {
   jobId: string;
@@ -127,7 +122,6 @@ interface DeleteUserResponse {
   success: boolean;
   message: string;
 }
-
 
 export type UserApplicationsResponse = {
   success: boolean;
@@ -197,7 +191,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       providesTags: ["UserApplications"],
     }),
 
-    
     applyForJob: builder.mutation<
       { success: boolean; message: string },
       { jobId: string }
