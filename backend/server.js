@@ -1,14 +1,14 @@
 import express from "express";
-import dotenv from "dotenv";
 import { ConnectDB } from "./config/db.js";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes.js";
+
 import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
 import JobRouter from "./routes/JobRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import cors from "cors";
-
-dotenv.config();
+import { PORT } from "./constants/env.const.js";
+import authRouter from "./routes/authRoutes.js";
+import userRouter from "./routes/usersRoutes.js";
 
 const app = express();
 
@@ -17,20 +17,20 @@ app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
-    methods:"GET,POST,DELETE,PUT",
-    allowedHeaders:"Content-Type,Authorization",
+    methods: "GET,POST,DELETE,PUT",
+    allowedHeaders: "Content-Type,Authorization",
     credentials: true,
   })
 );
 
-app.use("/api/users", userRoutes);
+app.use("/api/v1/auth", authRouter);
+
 app.use("/api/jobs", JobRouter);
 app.use("/api/users", adminRoutes);
+app.use("/api/v1/user", userRouter);
 
 app.use(notFound);
 app.use(errorHandler);
-
-const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
   ConnectDB();

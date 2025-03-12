@@ -1,22 +1,50 @@
-const notFound = (reg, res, next) => {
-  const error = new Error(`Not Found - ${reg.originalUrl}`);
-  res.status(404);
+import { ZodError } from "zod";
+import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } from "../constants/http.codes.js";
+import { HttpError } from "../utils/HttpError.js";
+import { NODE_ENV } from "../constants/env.const.js";
+
+
+const notFound = (req, res, next) => {
+  const error = new HttpError(`${req.originalUrl} : Not Found`, NOT_FOUND); // Use 404 directly
   next(error);
 };
 
-const errorHandler = (err, reg, res, next) => {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  let message = err.message;
+const handleZodError = (err) => {
+  const errors = err.issues.map((issue) => ({
+    path: issue.path.join("."),
+    message: issue.message,
+  }));
 
-  if (err.name === "CastError" && err.kind === "ObjectId") {
-    statusCode = 404;
-    message = "Resource not found";
+  return {
+    statusCode: BAD_REQUEST,
+    body: {
+      errors,
+      message: "Validation Error", // Generic message, individual messages are in the errors array
+    },
+  };
+};
+
+const errorHandler = (err, req, res, next) => {
+  console.error(err); // Log the full error for debugging purposes
+
+  if (err instanceof HttpError) {
+    return res.status(err.statusCode).json({
+      message: err.message,
+      stack: NODE_ENV === "development" ? err.stack : undefined, // Only include stack in development
+    });
   }
 
-  res.status(statusCode).json({
-    message,
-    stack: process.env.NODE_ENV === "production" ? null : err.stack,
+  if (err instanceof ZodError) {
+    const { statusCode, body } = handleZodError(err);
+    return res.status(statusCode).json(body);
+  }
+
+  // Generic error response. IT NOT JUST INTERNAL SERVER ERROR
+  return res.status(INTERNAL_SERVER_ERROR).json({
+    message: "Internal Server Error",
+    // Don't include stack traces in production for security reasons
+    stack: NODE_ENV === "development" ? err.stack : undefined,
   });
 };
 
-export { notFound, errorHandler };
+export { errorHandler, notFound };

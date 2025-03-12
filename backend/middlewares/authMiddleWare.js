@@ -2,6 +2,8 @@ import jwt from "jsonwebtoken";
 
 import asyncHandler from "express-async-handler";
 import User from "../models/UserModel.js";
+import { FORBIDDEN, UNAUTHORIZED } from "../constants/http.codes.js";
+import { HttpError } from "../utils/HttpError.js";
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
@@ -15,10 +17,10 @@ const protect = asyncHandler(async (req, res, next) => {
       next();
     } catch (error) {
       console.error(error);
-      res.status(401).json({ message: "Not authorized, invalid token" });
+      res.status(UNAUTHORIZED).json({ message: "Not authorized, invalid token" });
     }
   } else {
-    res.status(401).json({ message: "Not authorized, no token" });
+    res.status(UNAUTHORIZED).json({ message: "Not authorized, no token" });
   }
 });
 
@@ -26,9 +28,19 @@ export const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
     next();
   } else {
-    res.status(403);
+    res.status(FORBIDDEN);
     throw new Error("Access denied. Admins only.");
   }
 };
 
-export { protect };
+// Middleware to authorize based on user roles
+const authorizeRoles = (...allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return next(new HttpError("Not authorized", FORBIDDEN));
+    }
+    next(); // Proceed to the next middleware or route handler
+  };
+};
+
+export { protect, authorizeRoles };

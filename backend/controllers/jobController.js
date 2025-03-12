@@ -2,6 +2,7 @@ import AsyncHandler from "express-async-handler";
 import mongoose from "mongoose";
 import Jobs from "../models/JobsModel.js";
 import User from "../models/UserModel.js";
+import { BAD_REQUEST, CREATED, FORBIDDEN, INTERNAL_SERVER_ERROR, NOT_FOUND, OK } from "../constants/http.codes.js";
 
 
 export const addJob = AsyncHandler(async (req, res) => {
@@ -21,7 +22,7 @@ export const addJob = AsyncHandler(async (req, res) => {
   // Find the logged-in user
   const loginUser = await User.findById(userId);
   if (!loginUser || !["admin", "company_manager"].includes(loginUser.role)) {
-    return res.status(403).json({
+    return res.status(FORBIDDEN).json({
       success: false,
       message: "Access denied. Only admin and company managers can add jobs.",
     });
@@ -42,10 +43,10 @@ export const addJob = AsyncHandler(async (req, res) => {
     });
 
     const savedJob = await newJob.save();
-    res.status(201).json({ success: true, data: savedJob });
+    res.status(CREATED).json({ success: true, data: savedJob });
   } catch (error) {
     console.error("Error in creating job:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Server Error" });
   }
 });
 
@@ -57,7 +58,7 @@ export const GetallJobs = AsyncHandler(async (req, res) => {
   
 
   if (!mongoose.isValidObjectId(userId)) {
-    return res.status(400).json({
+    return res.status(BAD_REQUEST).json({
       success: false,
       message: "Invalid user ID",
     });
@@ -65,14 +66,14 @@ export const GetallJobs = AsyncHandler(async (req, res) => {
 
   try {
     const jobs = await Jobs.find({ userId });
-    res.status(200).json({
+    res.status(OK).json({
       success: true,
       message: "Successfully fetched jobs",
       data: jobs,
     });
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Server Error" });
   }
 });
 
@@ -85,7 +86,7 @@ export const updateJob = AsyncHandler(async (req, res) => {
   // Check if the user is authorized to update the job
   const loginUser = await User.findById(userId);
   if (!loginUser || !["admin", "company_manager"].includes(loginUser.role)) {
-    return res.status(403).json({
+    return res.status(FORBIDDEN).json({
       success: false,
       message:
         "Access denied. Only admin and company managers can update jobs.",
@@ -96,13 +97,13 @@ export const updateJob = AsyncHandler(async (req, res) => {
     const updatedJob = await Jobs.findByIdAndUpdate(id, jobData, { new: true });
 
     if (!updatedJob) {
-      return res.status(404).json({ success: false, message: "Job not found" });
+      return res.status(NOT_FOUND).json({ success: false, message: "Job not found" });
     }
 
-    res.status(200).json({ success: true, data: updatedJob });
+    res.status(OK).json({ success: true, data: updatedJob });
   } catch (error) {
     console.error("Error updating job:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Server Error" });
   }
 });
 
@@ -114,14 +115,14 @@ export const deleteJob = AsyncHandler(async (req, res) => {
     const job = await Jobs.findByIdAndDelete(id);
 
     if (!job) {
-      return res.status(404).json({ success: false, message: "Job not found" });
+      return res.status(NOT_FOUND).json({ success: false, message: "Job not found" });
     }
 
     res
-      .status(200)
+      .status(OK)
       .json({ success: true, message: "Job deleted successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Internal server error" });
   }
 });
 
@@ -140,23 +141,23 @@ export const getJobApplications = AsyncHandler(async (req, res) => {
       applicants: job.application,
     }));
 
-    res.status(200).json({ success: true, data: jobApplications });
+    res.status(OK).json({ success: true, data: jobApplications });
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Server Error" });
   }
 });
 
 export const liveFeedJobs = AsyncHandler(async(req, res) => {
   try {
     const jobs = await Jobs.find({  });
-    res.status(200).json({
+    res.status(OK).json({
       success: true,
       message: "Successfully fetched jobs",
       data: jobs,
     });
   } catch (error) {
     console.error(`Error: ${error.message}`);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(INTERNAL_SERVER_ERROR).json({ success: false, message: "Server Error" });
   }
 })
