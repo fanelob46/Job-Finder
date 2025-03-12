@@ -11,12 +11,16 @@ const passwordSchema = z
     password: passwordSchema,
   });
 
-  export const registerSchema = loginSchema.extend({
-    firstname: z.string().min(1, "First name is required"),
-    lastname: z.string(1,"Last name is required"),
-    confirmPassword: passwordSchema,
-    role: z.enum(["user", "admin"]).default("user"),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Password do not match",
-    path: ["confirmPassword"],
-  });
+  export const registerSchema = loginSchema
+    .extend({
+      firstname: z.string().min(1, "First name is required"),
+      lastname: z.string(1, "Last name is required"),
+      confirmPassword: passwordSchema,
+      role: z.enum(["user", "admin"]).default("user"),
+      location: z.string().min(1, "location is required"),
+      contact: z.string().min(1, "location is required"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Password do not match",
+      path: ["confirmPassword"],
+    });

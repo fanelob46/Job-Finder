@@ -27,18 +27,14 @@ const UserSchema = mongoose.Schema(
     },
     contact: {
       type: String,
+      required: true,
     },
     location: {
       type: String,
+      required: true,
     },
-    profileUrl: {
-      type: String,
-    },
-    cvUrl: {
-      type: String,
-    },
+
     jobs: [{ type: Schema.Types.ObjectId, ref: "Jobs" }],
-    
   },
   {
     timestamps: true,
