@@ -18,7 +18,7 @@ const passwordSchema = z
       confirmPassword: passwordSchema,
       role: z.enum(["user", "admin"]).default("user"),
       location: z.string().min(1, "location is required"),
-      contact: z.string().min(1, "location is required"),
+      contact: z.string().min(1, "contact is required"),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Password do not match",

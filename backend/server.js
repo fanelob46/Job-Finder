@@ -3,12 +3,13 @@ import { ConnectDB } from "./config/db.js";
 import cookieParser from "cookie-parser";
 
 import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
-import JobRouter from "./routes/JobRoutes.js";
+
 import adminRoutes from "./routes/adminRoutes.js";
 import cors from "cors";
 import { PORT } from "./constants/env.const.js";
 import authRouter from "./routes/authRoutes.js";
 import userRouter from "./routes/usersRoutes.js";
+import jobsRouter from "./routes/JobsRoutes.js";
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.use(
 
 app.use("/api/v1/auth", authRouter);
 
-app.use("/api/jobs", JobRouter);
+app.use("/api/jobs", jobsRouter);
 app.use("/api/users", adminRoutes);
 app.use("/api/v1/user", userRouter);
 
