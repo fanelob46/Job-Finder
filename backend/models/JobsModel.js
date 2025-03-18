@@ -9,8 +9,6 @@ const jobSchema = new mongoose.Schema(
     salary: { type: Number, required: true },
     desc: { type: String, required: true },
     requirements: { type: String },
-    application: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    userId: [{ type: Schema.Types.ObjectId, ref: "User" }],
     applications: [{ type: Schema.Types.ObjectId, ref: "User" }],
   },
   { timestamps: true }
