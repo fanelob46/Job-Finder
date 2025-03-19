@@ -69,7 +69,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
 
     liveFeedJobs: builder.query<jobResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/jobs/live",
+        url: "http://localhost:5000/api/jobs/",
         method: "GET",
       }),
       providesTags: ["Job"],

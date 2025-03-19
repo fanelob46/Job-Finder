@@ -1,9 +1,10 @@
 import asyncHandler from "express-async-handler";
-import { loginUser, registerUser, updateProfile } from "../service/authService.js";
+import { applyForJob, loginUser, registerUser, updateProfile } from "../service/authService.js";
 import generateToken from "../utils/generateToken.js";
 import User from "../models/UserModel.js";
-import { CREATED, OK } from "../constants/http.codes.js";
+import { CREATED, INTERNAL_SERVER_ERROR, OK } from "../constants/http.codes.js";
 import { clearAuthCookies } from "../utils/authCookies.js";
+import { HttpError } from "../utils/HttpError.js";
 
 
 
@@ -66,5 +67,3 @@ export const updateProfileHandler = asyncHandler(async (req, res, next) => {
     data: data,
   });
 });
-
-

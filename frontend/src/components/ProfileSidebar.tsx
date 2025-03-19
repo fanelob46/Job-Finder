@@ -37,12 +37,12 @@ const ProfileSidebar = () => {
               <span>Applied Jobs</span>
             </button>
           </Link>
-          <Link to={"/profile/applied-jobs"}>
+          
             <button className="flex items-center space-x-3 text-gray-700 hover:bg-gray-100 px-4 py-3 w-full text-left font-medium">
               <MdOutlineCheckBox className="text-lg" />
               <Logout/>
             </button>
-          </Link>
+          
         </div>
       </div>
     </div>

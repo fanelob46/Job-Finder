@@ -1,4 +1,5 @@
 import { CONFLICT, UNAUTHORIZED } from "../constants/http.codes.js";
+import Jobs from "../models/JobsModel.js";
 import User from "../models/UserModel.js";
 import { HttpError } from "../utils/HttpError.js";
 
@@ -108,5 +109,54 @@ export const updateProfile = async (updateData) => {
     location: updatedUser.location,
     contact: updatedUser.contact,
     role: updatedUser.role,
+  };
+};
+
+export const applyForJob = async (jobId, userId) => {
+  // Check if the user has already applied for the job
+  const alreadyApplied = await Jobs.findOne({
+    _id: jobId,
+    applications: userId,
+  });
+
+  if (alreadyApplied) {
+    throw new HttpError("You have already applied for this job", CONFLICT);
+  }
+
+  // Add the user to the job's applications
+  const job = await Jobs.findByIdAndUpdate(
+    jobId,
+    { $push: { applications: userId } },
+    { new: true }
+  );
+
+  if (!job) {
+    throw new HttpError("Job not found", NOT_FOUND);
+  }
+
+  return {
+    success: true,
+    message: "Application submitted successfully",
+  };
+};
+
+
+export const getUserApplications = async (userId) => {
+  // Find jobs the user has applied for
+  const jobs = await Jobs.find({ applications: userId }).populate(
+    "applications",
+    "firstname lastname email"
+  );
+
+  // Check if jobs were found
+  if (!jobs || jobs.length === 0) {
+    throw new HttpError("No applications found", NOT_FOUND);
+  }
+
+  // Return the result
+  return {
+    success: true,
+    message: "Jobs user has applied for",
+    data: jobs,
   };
 };
