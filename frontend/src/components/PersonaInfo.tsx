@@ -13,10 +13,10 @@ const PersonalInfo = () => {
 
 
 const { userInfo } = useSelector((state: RootState) => state.auth);
-// const [firstName, setFirstName] = useState(userInfo?.firstName || "");
-// const [lastName, setLastName] = useState(userInfo?.lastName || "");
-// const [email, setEmail] = useState(userInfo?.email || "");
-// const [location, setLocation] = useState(userInfo?.location || "");
+const [firstName, setFirstName] = useState(userInfo?.firstname || "");
+const [lastName, setLastName] = useState(userInfo?.lastname || "");
+const [email, setEmail] = useState(userInfo?.email || "");
+const [location, setLocation] = useState(userInfo?.location || "");
 
 
 

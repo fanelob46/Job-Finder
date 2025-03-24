@@ -34,7 +34,7 @@ const JobCard = () => {
   };
 
   // Filter jobs based on search terms
-  const filteredJobs = data?.data?.filter((job) => {
+  const filteredJobs = data?.data?.data?.filter((job) => {
     const matchesTitle = job.title
       ? job.title.toLowerCase().includes(searchTitle.toLowerCase())
       : false;

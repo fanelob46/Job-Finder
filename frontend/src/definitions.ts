@@ -1,11 +1,12 @@
 export type User = {
-  _id: string;
-  firstName: string;
-  lastName: string;
+
+  firstname: string;
+  lastname: string;
   email: string;
   location: string;
   contact: string;
   role: string;
+  password: string;
 };
 
 export type CreateUserResponse = {
@@ -28,18 +29,7 @@ export type UserStore = {
   logoutUser: () => Promise<CreateUserResponse | null>;
 };
 
-export const defaultUser = {
-  _id: "",
-  password: "",
-  firstName: "",
-  lastName: "",
-  email: "",
-  contact: "",
-  location: "",
-  profileUrl: "",
-  cvUrl: "",
-  role: "User",
-};
+
 
 export type LoginRequest = {
   email: string;

@@ -4,7 +4,6 @@ import cookieParser from "cookie-parser";
 
 import { notFound, errorHandler } from "./middlewares/errorMiddleWare.js";
 
-
 import cors from "cors";
 import { PORT } from "./constants/env.const.js";
 import authRouter from "./routes/authRoutes.js";

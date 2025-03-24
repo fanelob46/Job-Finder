@@ -1,4 +1,4 @@
-import { INTERNAL_SERVER_ERROR } from "../constants/http.codes.js";
+import { INTERNAL_SERVER_ERROR, OK } from "../constants/http.codes.js";
 import User from "../models/UserModel.js";
 import { applyForJob, getUserApplications } from "../service/authService.js";
 import { deleteOneDoc, getAllDocs, getOneDoc, updateOneDoc } from "../service/crudHandlerFactor.js";

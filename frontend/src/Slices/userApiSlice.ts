@@ -1,7 +1,6 @@
 import { Job } from "../definitions";
 import { apiSlice } from "./apiSlice";
 
-const USERS_URL = "/api/users";
 const ADMIN_URL = "/api/";
 
 interface LoginRequest {
@@ -10,15 +9,8 @@ interface LoginRequest {
 }
 
 interface LoginResponse {
-  success: boolean;
   message: string;
-  _id: string;
-  firstname: string;
-  lastname: string;
-  role: string;
-  location: string;
-  contact: string;
-  email: string;
+  data: User;
 }
 
 interface RegisterRequest {
@@ -28,10 +20,7 @@ interface RegisterRequest {
   password: string;
   role: string;
   contact: string;
-  createdAt: string;
   location: string;
-  cvUrl: string;
-  profileUrl: string;
 }
 
 export type GetProfileResponse = {
@@ -133,34 +122,34 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/users/login`,
+        url: `http://localhost:5000/api/v1/auth/login`,
         method: "POST",
         body: data,
       }),
     }),
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/users/logout`,
+        url: `http://localhost:5000/api/v1/auth/register`,
         method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: `${USERS_URL}/logout`,
+        url: `http://localhost:5000/api/v1/auth/logout`,
         method: "POST",
       }),
     }),
     updateUser: builder.mutation<UpdateUserResponse, UpdateUserRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/users/profile`,
+        url: `http://localhost:5000/api/v1/user/update`,
         method: "PUT",
         body: data,
       }),
     }),
     getProfile: builder.mutation<GetProfileResponse, GetProfileRequest>({
       query: (data) => ({
-        url: "http://localhost:5000/api/users/profile",
+        url: "http://localhost:5000/api/v1/user/profile",
         method: "GET",
         body: data,
       }),
@@ -184,7 +173,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
     getUserApplications: builder.query<UserApplicationsResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/users/jobs/applications",
+        url: "http://localhost:5000/api/v1/user/job-applications",
         method: "GET",
         credentials: "include",
       }),
@@ -196,7 +185,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       { jobId: string }
     >({
       query: ({ jobId }) => ({
-        url: `http://localhost:5000/api/users/jobs/apply`,
+        url: `http://localhost:5000/api/v1/user/apply`,
         method: "POST",
         body: { jobId },
         // credentials: "include",
@@ -205,7 +194,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
     getJobApplications: builder.query<JobApplicationResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/users/jobs/applications",
+        url: "http://localhost:5000/api/v1/user/applications",
         method: "GET",
       }),
       providesTags: ["JobApplication"],

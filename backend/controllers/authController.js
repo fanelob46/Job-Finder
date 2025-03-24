@@ -14,7 +14,7 @@ export const registHandler = asyncHandler(
 
     await generateToken(res, user._id);
 
-    const data = new User(user).omitField("password");
+    const data =  User(user).omitField("password");
 
     res.status(CREATED).json({
       message: "User Succesfully registered",

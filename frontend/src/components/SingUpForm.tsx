@@ -132,6 +132,12 @@ const SingUpForm = ({ name, type, submitFunction, error }: SignProps) => {
             name="password"
             className="border-b-2 p-2 w-[630px]"
           />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            className="border-b-2 p-2 w-[630px]"
+          />
           <div className="py-5 pl-[550px]">
             <button
               type="submit"

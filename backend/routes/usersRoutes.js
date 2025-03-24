@@ -6,7 +6,7 @@ const userRouter = Router();
 
 userRouter.get("/:id", protect, authorizeRoles("admin"), getUser);
 userRouter.get("/",protect,authorizeRoles("admin"), getAllUser);
-userRouter.put("/update", protect,authorizeRoles("user"), updateUser )
+userRouter.put("/update", protect,authorizeRoles("user","admin"), updateUser )
 userRouter.post("/apply",protect,authorizeRoles("user"), applyForHandler)
 userRouter.get("/job-applications",protect, authorizeRoles("admin", "user"), getUserApplicationsHandler)
 
