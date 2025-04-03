@@ -9,69 +9,69 @@ import { RegisterErrorResponse, UserFormData } from "../definitions";
 import { setCredentials } from "../Slices/authSlices";
 import SingUpForm from "./SingUpForm";
 
-
-
 const SingUp = () => {
-   const [register] = useRegisterMutation();
-   const dispatch = useDispatch();
-   const navigate = useNavigate();
-   const [signUpError, setSignUpError] = useState("");
+  const [register] = useRegisterMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [signUpError, setSignUpError] = useState("");
 
+  const handleSignUp = async (userData: UserFormData) => {
+    const {
+      firstname,
+      lastname,
+      email,
+      password,
+      confirmPassword,
+    
+      location,
+      contact,
+    } = userData;
 
+    if (password !== confirmPassword) {
+      setSignUpError("Passwords do not match");
+      return;
+    } else {
+      try {
+        const res = await register({
+          firstname,
+          lastname,
+          email,
+          password,
+          contact,
+          location,
+          role: ""
+        }).unwrap();
 
-    const handleSignUp = async (userData: UserFormData) => {
-      const { firstname, lastname, email, password, confirmPassword, role,location,contact } =
-        userData;
-
-     
-
-      if (password !== confirmPassword) {
-        setSignUpError("Passwords do not match");
-        return;
-      } else {
-        try {
-          const res = await register({
-            firstname,
-            lastname,
-            email,
-            password,
-            role,
-            contact,
-            createdAt: "",
-            location,
-            cvUrl: "",
-            profileUrl: ""
-          }).unwrap();
-
-          dispatch(setCredentials({
+        dispatch(
+          setCredentials({
             ...res,
             cvUrl: "",
-            profileUrl: ""
-          }));
-          setSignUpError("");
-           if (res.role == "admin") {
-             navigate("/admin");
-           } else {
-             navigate("/jobs");
-           }
-        } catch (error) {
-          const errorMessage: RegisterErrorResponse =
-            error as RegisterErrorResponse;
-          setSignUpError(errorMessage.data.message);
+            profileUrl: "",
+          })
+        );
+        setSignUpError("");
+        if (res.data.role == "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/jobs");
         }
+      } catch (error) {
+        const errorMessage: RegisterErrorResponse =
+          error as RegisterErrorResponse;
+        setSignUpError(errorMessage.data.message);
       }
-    };
- return (
-   <section>
-     <SingUpForm
-       name="Sign Up"
-       type="signup"
-       submitFunction={handleSignUp}
-       error={signUpError}
-     />
-   </section>
- );
-   
+    }
+  };
+  return (
+    <section>
+      <SingUpForm
+        name="Sign Up"
+        type="signup"
+        submitFunction={handleSignUp}
+        error={signUpError}
+      />
+    </section>
+  );
 };
 
 export default SingUp;

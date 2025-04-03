@@ -61,7 +61,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllJobs: builder.query<jobResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/jobs",
+        url: "http://localhost:8080/api/jobs",
         method: "GET",
       }),
       providesTags: ["Job"],
@@ -69,7 +69,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
 
     liveFeedJobs: builder.query<jobResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/jobs/",
+        url: "http://localhost:8080/api/jobs/",
         method: "GET",
       }),
       providesTags: ["Job"],
@@ -77,7 +77,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
 
     createJob: builder.mutation<createJobResponse, createJobRequest>({
       query: (data) => ({
-        url: "http://localhost:5000/api/jobs",
+        url: "http://localhost:8080/api/jobs",
         method: "POST",
         body: data,
       }),
@@ -85,7 +85,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
 
     updateJob: builder.mutation<UpdateJobResponse, { id: string; data: UpdateJobRequest }>({
       query: ({id, data}) => ({
-        url: `http://localhost:5000/api/jobs/${id}`,
+        url: `http://localhost:8080/api/jobs/${id}`,
         method: "PUT",
         body: data
       }),
@@ -93,7 +93,7 @@ export const jobApiSlice = apiSlice.injectEndpoints({
 
     deleteJob: builder.mutation<deleteJobResponse, string>({
       query: (id) => ({
-        url: `http://localhost:5000/api/jobs/${id}`,
+        url: `http://localhost:8080/api/jobs/${id}`,
         method: "DELETE",
       }),
     }),

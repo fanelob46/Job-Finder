@@ -8,11 +8,11 @@ const EditProfile = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
   // Local state for form fields
-  const [firstname, setFirstName] = useState(userInfo?.firstname || "");
-  const [lastname, setLastName] = useState(userInfo?.lastname || "");
-  const [email, setEmail] = useState(userInfo?.email || "");
-  const [location, setLocation] = useState(userInfo?.location || "");
-  const [contact, setContact] = useState(userInfo?.contact || "");
+  const [firstname, setFirstName] = useState(userInfo?.data.firstname || "");
+  const [lastname, setLastName] = useState(userInfo?.data.lastname || "");
+  const [email, setEmail] = useState(userInfo?.data.email || "");
+  const [location, setLocation] = useState(userInfo?.data.location || "");
+  const [contact, setContact] = useState(userInfo?.data.contact || "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");

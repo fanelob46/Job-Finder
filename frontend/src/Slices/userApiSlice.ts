@@ -1,7 +1,6 @@
 import { Job } from "../definitions";
 import { apiSlice } from "./apiSlice";
 
-const ADMIN_URL = "/api/";
 
 interface LoginRequest {
   email: string;
@@ -38,15 +37,7 @@ export type GetProfileRequest = {
 
 interface RegisterResponse {
   message: string;
-  id: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  password: string;
-  role: string;
-  contact: string;
-  createdAt: string;
-  location: string;
+  data: User;
 }
 
 interface UpdateUserRequest {
@@ -122,34 +113,34 @@ export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, LoginRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/v1/auth/login`,
+        url: `http://localhost:8080/api/v1/auth/login`,
         method: "POST",
         body: data,
       }),
     }),
     register: builder.mutation<RegisterResponse, RegisterRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/v1/auth/register`,
+        url: `http://localhost:8080/api/v1/auth/register`,
         method: "POST",
         body: data,
       }),
     }),
     logout: builder.mutation<void, void>({
       query: () => ({
-        url: `http://localhost:5000/api/v1/auth/logout`,
+        url: `http://localhost:8080/api/v1/auth/logout`,
         method: "POST",
       }),
     }),
     updateUser: builder.mutation<UpdateUserResponse, UpdateUserRequest>({
       query: (data) => ({
-        url: `http://localhost:5000/api/v1/user/update`,
+        url: `http://localhost:8080/api/v1/auth/update`,
         method: "PUT",
         body: data,
       }),
     }),
     getProfile: builder.mutation<GetProfileResponse, GetProfileRequest>({
       query: (data) => ({
-        url: "http://localhost:5000/api/v1/user/profile",
+        url: "http://localhost:8080/api/v1/user/profile",
         method: "GET",
         body: data,
       }),
@@ -157,23 +148,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
     getAllUsers: builder.query<GetAllUsersResponse, void>({
       query: () => ({
-        url: `$http://localhost:5000/api/users/admin`,
+        url: `$http://localhost:8080/api/users/admin`,
         method: "GET",
       }),
       providesTags: ["User"],
     }),
 
-    deleteUser: builder.mutation<DeleteUserResponse, string>({
-      query: (id) => ({
-        url: `${ADMIN_URL}/admin/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["User"],
-    }),
-
     getUserApplications: builder.query<UserApplicationsResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/v1/user/job-applications",
+        url: "http://localhost:8080/api/v1/user/job-applications",
         method: "GET",
         credentials: "include",
       }),
@@ -185,7 +168,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       { jobId: string }
     >({
       query: ({ jobId }) => ({
-        url: `http://localhost:5000/api/v1/user/apply`,
+        url: `http://localhost:8080/api/v1/user/apply`,
         method: "POST",
         body: { jobId },
         // credentials: "include",
@@ -194,7 +177,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
     getJobApplications: builder.query<JobApplicationResponse, void>({
       query: () => ({
-        url: "http://localhost:5000/api/v1/user/applications",
+        url: "http://localhost:8080/api/v1/user/applications",
         method: "GET",
       }),
       providesTags: ["JobApplication"],
@@ -208,7 +191,6 @@ export const {
   useRegisterMutation,
   useUpdateUserMutation,
   useGetAllUsersQuery,
-  useDeleteUserMutation,
   useGetProfileMutation,
   useGetUserApplicationsQuery,
   useApplyForJobMutation,

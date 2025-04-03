@@ -1,8 +1,11 @@
 import { ZodError } from "zod";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND } from "../constants/http.codes.js";
+import {
+  BAD_REQUEST,
+  INTERNAL_SERVER_ERROR,
+  NOT_FOUND,
+} from "../constants/http.codes.js";
 import { HttpError } from "../utils/HttpError.js";
 import { NODE_ENV } from "../constants/env.const.js";
-
 
 const notFound = (req, res, next) => {
   const error = new HttpError(`${req.originalUrl} : Not Found`, NOT_FOUND); // Use 404 directly

@@ -73,12 +73,12 @@ export type UserFormData = {
   email: string;
   password: string;
   confirmPassword: string;
-  role: string;
+  // role: string;
   secretKey?: string | "";
   location: string;
   contact: string;
-  cvUrl: string;
-  profileUrl: string;
+  // cvUrl: string;
+  // profileUrl: string;
 };
 
 export type RegisterErrorResponse = {

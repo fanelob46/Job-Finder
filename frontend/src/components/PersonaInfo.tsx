@@ -47,18 +47,18 @@ const [location, setLocation] = useState(userInfo?.location || "");
         {/* Phone Number */}
         <div className="flex items-center space-x-2">
           <FaPhone className="text-gray-400" />
-          <span>{userInfo?.contact}</span>
+          <span>{userInfo?.data.contact}</span>
         </div>
         {/* ID Number */}
         <div className="flex items-center space-x-2">
           <FaIdCard className="text-gray-400" />
-          <span>{userInfo?.firstname}</span>
+          <span>{userInfo?.data.firstname}</span>
         </div>
 
         {/* Email Address */}
         <div className="flex items-center space-x-2">
           <MdOutlineEmail className="text-gray-400" />
-          <span>{userInfo?.email}</span>
+          <span>{userInfo?.data.email}</span>
         </div>
         {/* Language */}
         <div className="flex items-center space-x-2">
@@ -69,14 +69,14 @@ const [location, setLocation] = useState(userInfo?.location || "");
         {/* Location */}
         <div className="flex items-center space-x-2">
           <IoLocationOutline className="text-gray-400" />
-          <span>{userInfo?.location}</span>
+          <span>{userInfo?.data.location}</span>
         </div>
       
 
         {/* Citizenship */}
         <div className="flex items-center space-x-2 col-span-2">
           <FaIdCard className="text-gray-400" />
-          <span>{userInfo?.lastname}</span>
+          <span>{userInfo?.data.lastname}</span>
         </div>
       </div>
     </div>

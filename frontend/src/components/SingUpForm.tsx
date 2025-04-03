@@ -22,31 +22,28 @@ const SingUpForm = ({ name, type, submitFunction, error }: SignProps) => {
          }
        };
 
- const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-   e.preventDefault();
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
 
-   const formData = new FormData(e.currentTarget);
-   const data = {
-     firstname: formData.get("firstname")?.toString() || "",
-     lastname: formData.get("lastname")?.toString() || "",
-     email: formData.get("email")?.toString() || "",
-     password: formData.get("password")?.toString() || "",
-     confirmPassword: formData.get("confirmPassword")?.toString() || "",
-     role: formData.get("role")?.toString() || "",
-     location: formData.get("location")?.toString() || "",
-     contact: formData.get("contact")?.toString() || "",
-     profileUrl: formData.get("profileUrl")?.toString() || "",
-     cvUrl: formData.get("cvUrl")?.toString() || "",
-   };
+  const formData = new FormData(e.currentTarget);
+  const data = {
+    firstname: formData.get("firstname")?.toString() || "",
+    lastname: formData.get("lastname")?.toString() || "",
+    email: formData.get("email")?.toString() || "",
+    password: formData.get("password")?.toString() || "",
+    confirmPassword: formData.get("confirmPassword")?.toString() || "", 
+    location: formData.get("location")?.toString() || "",
+    contact: formData.get("contact")?.toString() || "",
+  };
 
-   console.log(data);
+  console.log("Data being sent:", data);
 
-   try {
-     await submitFunction(data);
-   } catch (error) {
-     console.error("Error submitting form:", error);
-   }
- };
+  try {
+    await submitFunction(data);
+  } catch (error) {
+    console.error("Error submitting form:", error);
+  }
+};
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white ">
@@ -83,14 +80,19 @@ const SingUpForm = ({ name, type, submitFunction, error }: SignProps) => {
         <h1>PERSONAL INFO</h1>
       </div>
 
-      <form className="mt-6 grid grid-cols-2 gap-4">
+      <form className="mt-6 grid grid-cols-2 gap-4" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="First Name"
           name="firstname"
           className=" border-b-2 p-2 "
         />
-        <input type="text" placeholder="Last Name" className="border-b-2 p-2" />
+        <input
+          type="text"
+          placeholder="Last Name"
+          name="lastname"
+          className="border-b-2 p-2"
+        />
         <div className="col-span-2 flex space-x-5">
           <input
             type="text"
@@ -135,7 +137,7 @@ const SingUpForm = ({ name, type, submitFunction, error }: SignProps) => {
           <input
             type="password"
             placeholder="Confirm Password"
-            name="confirmPassword"
+            name="confirmPassword" 
             className="border-b-2 p-2 w-[630px]"
           />
           <div className="py-5 pl-[550px]">
